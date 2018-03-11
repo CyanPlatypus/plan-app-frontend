@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Burunduk</string>
+    <string name="question_text">Change ?</string>
+    <string name="button_text">Ok</string>
+</resources>
