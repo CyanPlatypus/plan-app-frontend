@@ -9,7 +9,6 @@ import com.plan_app.android_plan_app.R;
 
 import java.io.IOException;
 
-import classes.UserDto;
 import retrofit2.Call;
 import retrofit2.Callback;
 import okhttp3.ResponseBody;
