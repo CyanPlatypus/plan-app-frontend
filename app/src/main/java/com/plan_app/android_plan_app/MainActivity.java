@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.plan_app.android_plan_app.Helpers.EmptyCallback;
 import com.plan_app.android_plan_app.adapters.MyAdapter;
+import com.unnamed.b.atv.model.TreeNode;
+import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -49,6 +53,34 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         //mAdapter = new MyAdapter(myDataset);
         //mRecyclerView.setAdapter(mAdapter);
+
+//        TreeNode root = TreeNode.root();
+//
+//        TreeNode parent = new TreeNode("Bs");
+//        TreeNode child0 = new TreeNode("Bob");
+//        TreeNode child1 = new TreeNode("Bella");
+//
+//        TreeNode who = new TreeNode("Who");
+//        TreeNode p = new TreeNode("Pablo");
+//        TreeNode pd = new TreeNode("Pablo Diego");
+//        TreeNode pdf = new TreeNode("Pablo Diego Francisco");
+//
+//        pd.addChild(pdf);
+//        p.addChild(pd);
+//        who.addChild(p);
+//
+//        parent.addChildren(child0, child1);
+//
+//        root.addChildren(who, parent);
+//
+//        AndroidTreeView tView = new AndroidTreeView(this, root);
+//        tView.setDefaultAnimation(true);
+//        tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+//        ViewGroup containerView = (ViewGroup) findViewById(R.id.my_view_group);
+//        //linlay
+//        LinearLayout ll =  (LinearLayout) findViewById(R.id.linlay);
+        //containerView.addView(tView.getView());
+
     }
 
     private static Retrofit getRetrofit(){
@@ -64,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         PlanService service = retrofit.create(PlanService.class);
         Call<Iterable<TaskDto>> call =  service.getTasks(1);
 
+
+
+
+
         call.enqueue(new Callback<Iterable<TaskDto>>() {
             @Override
             public void onResponse(Call<Iterable<TaskDto>> call, Response<Iterable<TaskDto>> response) {
@@ -78,8 +114,12 @@ public class MainActivity extends AppCompatActivity {
                         us.add(e);
                     }
 
-                    mAdapter = new MyAdapter(us);
-                    mRecyclerView.setAdapter(mAdapter);
+
+
+                    //mAdapter = new MyAdapter(us);
+                    //mRecyclerView.setAdapter(mAdapter);
+
+                    DisplayTree(us);
                 }
             }
 
@@ -87,6 +127,35 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<Iterable<TaskDto>> call, Throwable t) {
             }
         });
+
+
+
+
+
+    }
+
+    private void DisplayTree(ArrayList<TaskDto> us){
+        TreeNode root = TreeNode.root();
+        for(TaskDto task:us){
+            root.addChild(BuildNode(task));
+        }
+
+        AndroidTreeView tView = new AndroidTreeView(this, root);
+        tView.setDefaultAnimation(true);
+        tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+        ViewGroup containerView = (ViewGroup) findViewById(R.id.my_view_group);
+        ViewGroup cView = (ViewGroup) findViewById(R.id.linlay);
+        cView.addView(tView.getView());
+    }
+
+    private TreeNode BuildNode(TaskDto task)
+    {
+        TreeNode node = new TreeNode(task.getName());
+
+        for (TaskDto child: task.getInnerTasks()){
+            node.addChild(BuildNode(child));
+        }
+        return node;
     }
 
     //@TargetApi(24)
