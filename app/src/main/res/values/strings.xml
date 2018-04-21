@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">Burunduk</string>
+    <string name="app_name">Planning App</string>
     <string name="question_text">Get hello from server</string>
-    <string name="button_text">Ok</string>
+    <string name="button_text">OK</string>
     <string name="go_button_text">Go</string>
+    <string name="task_list_title">Tasks</string>
+    <string name="navigation_view_header_title">Planning App</string>
+    <string name="menu_delete_task">Delete task</string>
+    <string name="refresh">Refresh</string>
+
+    <string name="loading_text">Loading...</string>
+    <string name="loading_error_text">Loading error :(</string>
 </resources>

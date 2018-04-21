@@ -1,7 +1,9 @@
-package com.plan_app.android_plan_app;
+package com.plan_app.android_plan_app.tasks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.plan_app.android_plan_app.dummy.DummyContent;
-import com.plan_app.android_plan_app.dummy.DummyContent.DummyItem;
+import com.plan_app.android_plan_app.R;
+import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.task_info.TaskInfoActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,28 +25,23 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class TaskFragment extends Fragment {
+public class TasksFragment extends Fragment implements TasksContract.View {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private TasksContract.Presenter mPresenter;
+
+    private TaskRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TaskFragment() {
+    public TasksFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TaskFragment newInstance(int columnCount) {
-        TaskFragment fragment = new TaskFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+    public static TasksFragment newInstance() {
+        TasksFragment fragment = new TasksFragment();
         return fragment;
     }
 
@@ -50,13 +49,17 @@ public class TaskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task_list, container, false);
 
@@ -64,46 +67,42 @@ public class TaskFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new TaskRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new TaskRecyclerViewAdapter(new OnListFragmentInteractionListener() {
+                @Override
+                public void onTaskClick(Task task) {
+                    mPresenter.openTaskInfo(task);
+                }
+            }, new ArrayList<>());
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
 
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+    public void setPresenter(TasksContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void showTasks(List<Task> tasks) {
+        mAdapter.setTasks(tasks);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    @Override
+    public void showNoTasks() {
+
+    }
+
+    @Override
+    public void showTaskInfo(String taskId) {
+        Intent intent = new Intent(getContext(), TaskInfoActivity.class);
+        intent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, taskId);
+        startActivity(intent);
+    }
+
+    interface OnListFragmentInteractionListener {
+        void onTaskClick(Task task);
     }
 }

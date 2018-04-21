@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.android.architecture.blueprints.todoapp.data.source;
+package com.plan_app.android_plan_app.data.source;
+
 
 import android.support.annotation.NonNull;
 
-import com.example.android.architecture.blueprints.todoapp.data.Task;
+import com.plan_app.android_plan_app.data.Task;
 
 import java.util.List;
 
@@ -51,16 +52,16 @@ public interface TasksDataSource {
     void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback);
 
     void saveTask(@NonNull Task task);
-
-    void completeTask(@NonNull Task task);
-
-    void completeTask(@NonNull String taskId);
-
-    void activateTask(@NonNull Task task);
-
-    void activateTask(@NonNull String taskId);
-
-    void clearCompletedTasks();
+//
+//    void completeTask(@NonNull Task task);
+//
+//    void completeTask(@NonNull String taskId);
+//
+//    void activateTask(@NonNull Task task);
+//
+//    void activateTask(@NonNull String taskId);
+//
+//    void clearCompletedTasks();
 
     void refreshTasks();
 
