@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.plan_app.android_plan_app.R;
 import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.sign_up.SignUpActivity;
 import com.plan_app.android_plan_app.task_info.TaskInfoActivity;
 
 import java.util.ArrayList;
@@ -76,6 +78,13 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             }, new ArrayList<>());
             recyclerView.setAdapter(mAdapter);
         }
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_task);
+
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SignUpActivity.class);
+            startActivity(intent);
+        });
         return view;
     }
 
