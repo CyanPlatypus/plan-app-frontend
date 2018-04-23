@@ -26,4 +26,5 @@
         completions."
     </string>
     <string name="action_sign_up">Sign up</string>
+    <string name="error_wrong_email_or_password">Wrong email or password</string>
 </resources>

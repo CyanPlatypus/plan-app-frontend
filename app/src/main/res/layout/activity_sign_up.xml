@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/login"
+                    android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_login"
@@ -98,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_up"
+                android:background="@color/colorAccent"
                 android:textStyle="bold" />
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.plan_app.android_plan_app.server;
 import android.util.Base64;
 
 import com.plan.dto.TaskDto;
+import com.plan.dto.UserCreateRequestDto;
 import com.plan_app.android_plan_app.data.Task;
 import com.plan_app.android_plan_app.server.remote_api_service.PlanService;
 import com.plan_app.android_plan_app.server.remote_api_service.ServiceGenerator;
@@ -11,6 +12,7 @@ import com.plan_app.android_plan_app.server.response.AuthenticationResponse;
 import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,8 +45,7 @@ public class AuthenticationService {
         return tokenWithType;
     }
 
-    public  void logIn(String login, String pass, SignInCallback callback)
-    {
+    public  void signIn(String login, String pass, SignInCallback callback){
         PlanService planService = ServiceGenerator
                 .createService(PlanService.class, CLIENT_CREDENTIALS);//bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0
         Call<AuthenticationResponse> call = planService.signIn("password", login, pass);
@@ -68,6 +69,42 @@ public class AuthenticationService {
 
             @Override
             public void onFailure(Call<AuthenticationResponse> call, Throwable t) {
+                callback.onFailure();
+            }
+        });
+    }
+
+    public void signUp(String name, String email, String pass, SignInCallback callback){
+        PlanService planService = ServiceGenerator
+                .createSimpleService(PlanService.class);
+
+        UserCreateRequestDto dto = new UserCreateRequestDto();
+        dto.setName(name);
+        dto.setEmail(email);
+        dto.setPass(pass);
+        Call<ResponseBody> call = planService.signUp(dto);
+
+        call.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()){
+
+                    signIn( email,  pass,  callback);
+
+                    //Object auth = response.body();
+
+                    //tokenWithType = "Bearer " + auth.getAccess_token();
+
+//                    callback.onSuccess();
+                }
+                else
+                    callback.onFailure();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callback.onFailure();
             }
         });

@@ -20,15 +20,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +60,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private UserLoginTask mAuthTask = null;
 
     // UI references.
+    private AutoCompleteTextView mNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -74,25 +72,36 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         setContentView(R.layout.activity_sign_up);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mNameView = (AutoCompleteTextView) findViewById(R.id.name);
+        //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+
+        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptSignUp();
             }
         });
 
@@ -151,8 +160,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
      */
     private void attemptLogin() {
 
-
-
         if (mAuthTask != null) {
             return;
         }
@@ -196,7 +203,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // perform the user login attempt.
             //showProgress(true);
 
-            AuthenticationService.getInstance().logIn(email, password, new SignInCallback() {
+            AuthenticationService.getInstance().signIn(email, password, new SignInCallback() {
                 @Override
                 public void onSuccess() {
                     changeActivity();
@@ -204,8 +211,76 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
                 @Override
                 public void onFailure() {
-                    mEmailView.setError("wrong");
-                    mPasswordView.setError("wrong");
+                    mEmailView.setError(getString(R.string.error_wrong_email_or_password));
+                    mPasswordView.setError(getString(R.string.error_wrong_email_or_password));
+                }
+            });
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
+        }
+    }
+
+    private void attemptSignUp() {
+
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String name = mNameView.getText().toString();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
+            cancel = true;
+        }
+//        else if (!isEmailValid(email)) {
+//            mEmailView.setError(getString(R.string.error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            //showProgress(true);
+
+            AuthenticationService.getInstance().signUp(name, email, password, new SignInCallback() {
+                @Override
+                public void onSuccess() {
+                    changeActivity();
+                }
+
+                @Override
+                public void onFailure() {
+                    mEmailView.setError(getString(R.string.error_wrong_email_or_password));
+                    mPasswordView.setError(getString(R.string.error_wrong_email_or_password));
                 }
             });
             //mAuthTask = new UserLoginTask(email, password);

@@ -32,6 +32,10 @@ public class ServiceGenerator {
 //        return createService(serviceClass, null, null, null, );
 //    }
 
+    public static <S> S createSimpleService(Class<S> serviceClass){
+        return createService(serviceClass,null);
+    }
+
     public static <S> S createService(Class<S> serviceClass){
         return createService(serviceClass, AuthenticationService.getInstance().getTokenWithType());
     }
