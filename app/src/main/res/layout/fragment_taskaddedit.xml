@@ -8,17 +8,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="@string/task_name"
             android:id="@+id/name" />
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="number"
+            android:hint="@string/task_actual_hours"
+            android:id="@+id/actualHours" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="number"
+            android:hint="@string/task_planned_hours"
+            android:id="@+id/plannedHours" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:hint="@string/task_description"
             android:id="@+id/description" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/hours" />
     </LinearLayout>
 </ScrollView>

@@ -29,12 +29,16 @@ public class TaskInfoPresenter implements TaskInfoContract.Presenter {
         mTaskRepository.getTask(mTaskId, new TasksDataSource.GetTaskCallback() {
             @Override
             public void onTaskLoaded(Task task) {
-                mView.setLoadingIndicator(false);
-                showTask(task);
+                if (mView.isActive()) {
+                    mView.setLoadingIndicator(false);
+                    showTask(task);
+                }
             }
 
             @Override
             public void onDataNotAvailable() {
+                if (!mView.isActive())
+                    return;
                 mView.showTaskLoadingError();
             }
         });
@@ -57,7 +61,7 @@ public class TaskInfoPresenter implements TaskInfoContract.Presenter {
 
     @Override
     public void editTask() {
-
+        mView.showTaskEdit(mTaskId);
     }
 
     @Override

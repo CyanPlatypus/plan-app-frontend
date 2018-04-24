@@ -1,5 +1,7 @@
 package com.plan_app.android_plan_app.task_info;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.plan_app.android_plan_app.R;
+import com.plan_app.android_plan_app.task_add_edit.TaskAddEditActivity;
 
 
 public class TaskInfoFragment extends Fragment implements TaskInfoContract.View {
@@ -109,7 +112,17 @@ public class TaskInfoFragment extends Fragment implements TaskInfoContract.View 
 
     @Override
     public void showTaskEdit(@NonNull String taskId) {
+        Intent intent = new Intent(getContext(), TaskAddEditActivity.class);
+        intent.putExtra(TaskAddEditActivity.ARGUMENT_EDIT_TASK_ID, taskId);
+        startActivityForResult(intent, TaskAddEditActivity.REQUEST_EDIT_TASK);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == TaskAddEditActivity.REQUEST_EDIT_TASK
+                && resultCode == Activity.RESULT_OK) {
+            mPresenter.start();
+        }
     }
 
     @Override
@@ -128,4 +141,8 @@ public class TaskInfoFragment extends Fragment implements TaskInfoContract.View 
         mDescription.setText(R.string.loading_error_text);
     }
 
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
 }

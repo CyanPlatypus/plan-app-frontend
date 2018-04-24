@@ -22,7 +22,6 @@ public class TasksRepository implements TasksDataSource {
 //        mCache.put("3", new Task("Task3", "Task3 description", "3", 5, 5, true));
 //        mCache.put("4", new Task("Task4", "Task4 description", "4", 12 ,32, false));
 //        mCache.put("5", new Task("Task5", "Task5 description", "5", 1, 2, true));
-
     }
 
     public static TasksRepository getInstance() {

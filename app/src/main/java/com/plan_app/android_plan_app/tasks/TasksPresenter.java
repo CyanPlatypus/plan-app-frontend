@@ -1,10 +1,12 @@
 package com.plan_app.android_plan_app.tasks;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.plan_app.android_plan_app.data.Task;
 import com.plan_app.android_plan_app.data.source.TasksDataSource;
 import com.plan_app.android_plan_app.data.source.TasksRepository;
+import com.plan_app.android_plan_app.task_add_edit.TaskAddEditActivity;
 
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class TasksPresenter implements TasksContract.Presenter {
 
             @Override
             public void onTasksLoaded(List<Task> tasks) {
+                if (!mTasksView.isActive())
+                    return;
                 if (tasks.size() == 0) {
                     mTasksView.showNoTasks();
                 }
@@ -44,6 +48,8 @@ public class TasksPresenter implements TasksContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
+                if (!mTasksView.isActive())
+                    return;
                 mTasksView.showNoTasks();
             }
         });
@@ -52,5 +58,18 @@ public class TasksPresenter implements TasksContract.Presenter {
     @Override
     public void openTaskInfo(@NonNull Task task) {
         mTasksView.showTaskInfo(task.getId());
+    }
+
+    @Override
+    public void onAddActivityResult(int requestCode, int resultCode) {
+        if (requestCode == TaskAddEditActivity.REQUEST_ADD_TASK
+                && resultCode == Activity.RESULT_OK) {
+            mTasksView.showSuccessfullySavedMessage();
+        }
+    }
+
+    @Override
+    public void addNewTask() {
+        mTasksView.showAddTask();
     }
 }

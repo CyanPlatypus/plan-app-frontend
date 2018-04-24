@@ -18,7 +18,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tasksinfo_activity);
+        setContentView(R.layout.activity_taskinfo);
         // Set up the toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

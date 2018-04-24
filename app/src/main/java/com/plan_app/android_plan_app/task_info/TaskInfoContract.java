@@ -26,6 +26,8 @@ public interface TaskInfoContract {
         void showTaskEdit(String taskId);
 
         void showTaskLoadingError();
+
+        boolean isActive();
     }
 
     interface Presenter extends BasePresenter {

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.plan_app.android_plan_app.R;
 import com.plan_app.android_plan_app.data.Task;
-import com.plan_app.android_plan_app.sign_up.SignUpActivity;
+import com.plan_app.android_plan_app.task_add_edit.TaskAddEditActivity;
 import com.plan_app.android_plan_app.task_info.TaskInfoActivity;
 
 import java.util.ArrayList;
@@ -50,8 +50,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -80,17 +78,15 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         }
 
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_task);
-
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), SignUpActivity.class);
-            startActivity(intent);
+            mPresenter.addNewTask();
         });
         return view;
     }
 
 
     @Override
-    public void setPresenter(TasksContract.Presenter presenter) {
+    public void setPresenter(@NonNull TasksContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -109,6 +105,22 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         Intent intent = new Intent(getContext(), TaskInfoActivity.class);
         intent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, taskId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
+
+    @Override
+    public void showAddTask() {
+        Intent intent = new Intent(getContext(), TaskAddEditActivity.class);
+        startActivityForResult(intent, TaskAddEditActivity.REQUEST_ADD_TASK);
+    }
+
+    @Override
+    public void showSuccessfullySavedMessage() {
+        Snackbar.make(getView(), getString(R.string.task_succesfully_saved), Snackbar.LENGTH_LONG).show();
     }
 
     interface OnListFragmentInteractionListener {
