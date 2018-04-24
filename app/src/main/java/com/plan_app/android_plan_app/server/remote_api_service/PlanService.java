@@ -13,9 +13,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-/**
- * Created by Ella on 22.04.2018.
- */
 
 public interface PlanService {
 

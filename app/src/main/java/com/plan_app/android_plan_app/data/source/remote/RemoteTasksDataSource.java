@@ -15,9 +15,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Ella on 22.04.2018.
- */
 
 public class RemoteTasksDataSource implements TasksDataSource {
 
@@ -40,7 +37,7 @@ public class RemoteTasksDataSource implements TasksDataSource {
 
         call.enqueue(new Callback<Iterable<TaskDto>>() {
             @Override
-            public void onResponse(Call<Iterable<TaskDto>> call, Response<Iterable<TaskDto>> response) {
+            public void onResponse(@NonNull Call<Iterable<TaskDto>> call, @NonNull Response<Iterable<TaskDto>> response) {
 
                 if (response.isSuccessful()){
 
@@ -61,7 +58,7 @@ public class RemoteTasksDataSource implements TasksDataSource {
             }
 
             @Override
-            public void onFailure(Call<Iterable<TaskDto>> call, Throwable t) {
+            public void onFailure(@NonNull Call<Iterable<TaskDto>> call, @NonNull Throwable t) {
                 callback.onDataNotAvailable();
             }
         });
