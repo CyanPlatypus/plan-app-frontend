@@ -16,7 +16,7 @@ public interface TasksContract {
 
         void showTasks(List<Task> tasks);
 
-//        void showAddTask();
+        void showAddTask();
 //
         void showTaskInfo(String taskId);
 //
@@ -34,22 +34,22 @@ public interface TasksContract {
 //
 //        void showNoCompletedTasks();
 //
-//        void showSuccessfullySavedMessage();
+        void showSuccessfullySavedMessage();
 //
-//        boolean isActive();
+        boolean isActive();
 //
 //        void showFilteringPopUpMenu();
     }
 
     interface Presenter extends BasePresenter {
 
-//        void result(int requestCode, int resultCode);
+        void onAddActivityResult(int requestCode, int resultCode);
 
         void loadTasks(boolean forceUpdate);
 
         void openTaskInfo(@NonNull Task task);
 
-//        void addNewTask();
+        void addNewTask();
 //
 //        void completeTask(@NonNull Task completedTask);
 //
