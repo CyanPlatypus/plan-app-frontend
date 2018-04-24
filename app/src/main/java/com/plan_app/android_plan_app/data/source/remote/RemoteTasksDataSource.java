@@ -93,6 +93,24 @@ public class RemoteTasksDataSource implements TasksDataSource {
         });
     }
 
+    public void editTask(Task task){
+        PlanService planService = ServiceGenerator.createService(PlanService.class);
+
+        Call<ResponseBody> call = planService.editTask(ConvertToTaskDto(task));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     @Override
     public void refreshTasks() {
 
@@ -108,12 +126,33 @@ public class RemoteTasksDataSource implements TasksDataSource {
 
     }
 
+    public void deleteTask(Integer id){
+        if(id == null) return ;
+
+        PlanService planService = ServiceGenerator.createService(PlanService.class);
+
+        Call<ResponseBody> call = planService.removeTask(id);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     public static TaskDto ConvertToTaskDto(Task task){
         TaskDto tDto = new TaskDto();
         tDto.setActualHours(task.getActualHours());
         tDto.setPlannedHours(task.getPlannedHours());
         tDto.setDescription(task.getDescription());
         tDto.setName(task.getName());
+        tDto.setId(task.getRemoteId());
         return tDto;
     }
 

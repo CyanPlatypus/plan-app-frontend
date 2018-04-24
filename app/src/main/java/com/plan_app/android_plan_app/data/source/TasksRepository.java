@@ -66,8 +66,15 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void saveTask(@NonNull Task task) {
+        //edit
+        if(mCache.containsKey(task.getId())){
+            RemoteTasksDataSource.getInstance().editTask(task);
+        }
+        //add
+        else{
         RemoteTasksDataSource.getInstance().saveTask(task);
         mCache.put(task.getId(), task);
+        }
     }
 
 
@@ -83,6 +90,10 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void deleteTask(@NonNull String taskId) {
+        if(mCache.containsKey(taskId)){
+            Integer id = mCache.get(taskId).getRemoteId();
+            RemoteTasksDataSource.getInstance().deleteTask(id);
+        }
         mCache.remove(taskId);
     }
 }
