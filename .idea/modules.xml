@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-plan-app.iml" filepath="$PROJECT_DIR$/android-plan-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plan-app-frontend.iml" filepath="$PROJECT_DIR$/plan-app-frontend.iml" />
       <module fileurl="file://B:\Java\android-plan-app\plan-app-frontend.iml" filepath="B:\Java\android-plan-app\plan-app-frontend.iml" />
     </modules>
   </component>

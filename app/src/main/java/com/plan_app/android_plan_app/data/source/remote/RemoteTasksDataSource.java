@@ -118,9 +118,8 @@ public class RemoteTasksDataSource implements TasksDataSource {
     }
 
     public static Task ConvertToTask(TaskDto tDto){
-        Task t = new Task(tDto.getName(),
-                tDto.getDescription(), tDto.getId().toString(),
-                (int) tDto.getPlannedHours(), (int) tDto.getPlannedHours(), tDto.isFinished());
+        Task t = new Task(tDto.getName(), tDto.getDescription(),
+                (int) tDto.getPlannedHours(), (int) tDto.getActualHours(), tDto.isFinished());
         t.setRemoteId(tDto.getId());
         return t;
     }

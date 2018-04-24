@@ -39,8 +39,8 @@ public class TasksRepository implements TasksDataSource {
             public void onTasksLoaded(List<Task> tasks) {
                 mCache.clear();
                 for (Task t :tasks) {
-                    if(mCache.containsKey(t.getId()))
-                    mCache.put(t.getId(), t);
+                    if(!mCache.containsKey(t.getId()))
+                        mCache.put(t.getId(), t);
                 }
 
                 callback.onTasksLoaded(tasks);

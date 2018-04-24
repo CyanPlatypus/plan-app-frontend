@@ -16,7 +16,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ServiceGenerator {
     private static final String API_URL = "http://192.168.0.101:8080";
-//    private static final String API_URL = "http://127.0.0.1:8080";
+    //////private static final String API_URL = "http://127.0.0.1:8080";//
+    //private static final String API_URL = "http://192.168.0.13:8080";//julie
 
     private static OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
