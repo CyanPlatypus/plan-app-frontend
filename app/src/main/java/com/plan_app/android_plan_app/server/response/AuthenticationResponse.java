@@ -1,8 +1,5 @@
 package com.plan_app.android_plan_app.server.response;
 
-/**
- * Created by Ella on 22.04.2018.
- */
 
 public class AuthenticationResponse {
 

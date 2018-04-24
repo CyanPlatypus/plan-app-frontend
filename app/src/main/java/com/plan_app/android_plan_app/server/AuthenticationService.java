@@ -1,5 +1,6 @@
 package com.plan_app.android_plan_app.server;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import com.plan.dto.TaskDto;
@@ -19,9 +20,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-/**
- * Created by Ella on 22.04.2018.
- */
 
 public class AuthenticationService {
 
@@ -53,7 +51,7 @@ public class AuthenticationService {
         call.enqueue(new Callback<AuthenticationResponse>() {
 
             @Override
-            public void onResponse(Call<AuthenticationResponse> call, Response<AuthenticationResponse> response) {
+            public void onResponse(@NonNull Call<AuthenticationResponse> call, @NonNull Response<AuthenticationResponse> response) {
 
                 if (response.isSuccessful()){
 
@@ -68,7 +66,7 @@ public class AuthenticationService {
             }
 
             @Override
-            public void onFailure(Call<AuthenticationResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<AuthenticationResponse> call, @NonNull Throwable t) {
                 callback.onFailure();
             }
         });
@@ -87,7 +85,7 @@ public class AuthenticationService {
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
 
                 if (response.isSuccessful()){
 
@@ -104,7 +102,7 @@ public class AuthenticationService {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 callback.onFailure();
             }
         });

@@ -17,19 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".tasks.TasksActivity">
+        </activity>
+        <activity android:name=".task_info.TaskInfoActivity"/>
+        <activity android:name=".task_add_edit.TaskAddEditActivity" />
+
+        <activity
+            android:name=".sign_up.SignUpActivity"
+            android:label="@string/title_activity_sign_up">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".task_info.TaskInfoActivity"/>
-        <activity android:name=".task_add_edit.TaskAddEditActivity" />
-
-        <activity
-            android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"/>
-        <activity android:name=".sign_up.SignUpActivity" />
     </application>
 
 </manifest>
