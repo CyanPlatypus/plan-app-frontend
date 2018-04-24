@@ -17,11 +17,11 @@ public class TasksRepository implements TasksDataSource {
 
     private TasksRepository() {
         mCache = new HashMap<>();
-        mCache.put("1", new Task("Task1", "Task1 description", "1", 10,15, true));
-        mCache.put("2", new Task("Task2", "Task2 description", "2", 13, 5, false));
-        mCache.put("3", new Task("Task3", "Task3 description", "3", 5, 5, true));
-        mCache.put("4", new Task("Task4", "Task4 description", "4", 12 ,32, false));
-        mCache.put("5", new Task("Task5", "Task5 description", "5", 1, 2, true));
+//        mCache.put("1", new Task("Task1", "Task1 description", "1", 10,15, true));
+//        mCache.put("2", new Task("Task2", "Task2 description", "2", 13, 5, false));
+//        mCache.put("3", new Task("Task3", "Task3 description", "3", 5, 5, true));
+//        mCache.put("4", new Task("Task4", "Task4 description", "4", 12 ,32, false));
+//        mCache.put("5", new Task("Task5", "Task5 description", "5", 1, 2, true));
 
     }
 
@@ -35,7 +35,23 @@ public class TasksRepository implements TasksDataSource {
     @Override
     public void getTasks(@NonNull LoadTasksCallback callback) {
         //callback.onTasksLoaded(new ArrayList<>(mCache.values()));
-        RemoteTasksDataSource.getInstance().getTasks(callback);
+        RemoteTasksDataSource.getInstance().getTasks(new LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                mCache.clear();
+                for (Task t :tasks) {
+                    if(mCache.containsKey(t.getId()))
+                    mCache.put(t.getId(), t);
+                }
+
+                callback.onTasksLoaded(tasks);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override
@@ -51,6 +67,7 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void saveTask(@NonNull Task task) {
+        RemoteTasksDataSource.getInstance().saveTask(task);
         mCache.put(task.getId(), task);
     }
 

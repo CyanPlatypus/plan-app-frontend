@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.plan_app.android_plan_app.data.Task;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Main entry point for accessing tasks data.

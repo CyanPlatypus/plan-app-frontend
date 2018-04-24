@@ -10,7 +10,10 @@ import com.plan_app.android_plan_app.server.remote_api_service.ServiceGenerator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,11 +52,12 @@ public class RemoteTasksDataSource implements TasksDataSource {
                     ArrayList<Task> tasks = new ArrayList<>();
 
                     for(TaskDto tDto: tasksDto) {
-                        Task t = new Task(tDto.getName(),
-                                tDto.getDescription(), tDto.getId().toString(),
-                                0, 0, false);
+//                        Task t = new Task(tDto.getName(),
+//                                tDto.getDescription(), tDto.getId().toString(),
+//                                (int) tDto.getPlannedHours(), (int) tDto.getPlannedHours(), tDto.isFinished());
+//                        t.setRemoteId(tDto.getId());
 
-                        tasks.add(t);
+                        tasks.add( ConvertToTask(tDto));
                     }
 
                     callback.onTasksLoaded(tasks);
@@ -69,12 +73,27 @@ public class RemoteTasksDataSource implements TasksDataSource {
 
     @Override
     public void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback) {
-
+//        PlanService planService = ServiceGenerator.createService(PlanService.class);
+//        Call<TaskDto> call = planService.getTask()
     }
 
     @Override
     public void saveTask(@NonNull Task task) {
+        PlanService planService = ServiceGenerator.createService(PlanService.class);
 
+        Call<ResponseBody> call = planService.addTask(ConvertToTaskDto(task));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -90,5 +109,22 @@ public class RemoteTasksDataSource implements TasksDataSource {
     @Override
     public void deleteTask(@NonNull String taskId) {
 
+    }
+
+    public static TaskDto ConvertToTaskDto(Task task){
+        TaskDto tDto = new TaskDto();
+        tDto.setActualHours(task.getActualHours());
+        tDto.setPlannedHours(task.getPlannedHours());
+        tDto.setDescription(task.getDescription());
+        tDto.setName(task.getName());
+        return tDto;
+    }
+
+    public static Task ConvertToTask(TaskDto tDto){
+        Task t = new Task(tDto.getName(),
+                tDto.getDescription(), tDto.getId().toString(),
+                (int) tDto.getPlannedHours(), (int) tDto.getPlannedHours(), tDto.isFinished());
+        t.setRemoteId(tDto.getId());
+        return t;
     }
 }

@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -28,4 +29,10 @@ public interface PlanService {
                                         @Query("password") String password);
     @POST("/signup")
     Call<ResponseBody> signUp(@Body UserCreateRequestDto dto);
+
+    @GET("/tasks/{id}")
+    Call<TaskDto> getTask(@Path("id") Integer id );
+
+    @POST("/tasks/add")
+    Call<ResponseBody> addTask(@Body TaskDto  taskDto);
 }

@@ -40,6 +40,8 @@ public class Task {
 
     private final int plannedHours;
 
+    private Integer remoteId;
+
     public int getPlannedHours() {
         return plannedHours;
     }
@@ -55,6 +57,14 @@ public class Task {
     }
 
     private final boolean isCompleted;
+
+    public Integer getRemoteId() {
+        return remoteId;
+    }
+
+    public void setRemoteId(Integer remoteId) {
+        this.remoteId = remoteId;
+    }
 
     @Ignore
     public Task(@NonNull String name, @Nullable String description, @NonNull String id,
