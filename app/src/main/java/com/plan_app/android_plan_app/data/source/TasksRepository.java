@@ -3,6 +3,7 @@ package com.plan_app.android_plan_app.data.source;
 import android.support.annotation.NonNull;
 
 import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.data.source.remote.RemoteTasksDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,8 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void getTasks(@NonNull LoadTasksCallback callback) {
-        callback.onTasksLoaded(new ArrayList<>(mCache.values()));
+        //callback.onTasksLoaded(new ArrayList<>(mCache.values()));
+        RemoteTasksDataSource.getInstance().getTasks(callback);
     }
 
     @Override
