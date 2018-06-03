@@ -22,8 +22,7 @@
         <activity android:name=".task_add_edit.TaskAddEditActivity" />
 
         <activity
-            android:name=".sign_up.SignUpActivity"
-            android:label="@string/title_activity_sign_up">
+            android:name=".sign_up.SignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
