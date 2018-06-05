@@ -1,5 +1,6 @@
 package com.plan_app.android_plan_app.tasks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import com.plan_app.android_plan_app.R;
 import com.plan_app.android_plan_app.data.source.TasksRepository;
+import com.plan_app.android_plan_app.sign_up.SignUpActivity;
 
 
 public class TasksActivity extends AppCompatActivity {
@@ -84,6 +86,9 @@ public class TasksActivity extends AppCompatActivity {
                             case R.id.list_navigation_menu_item:
                                 // Do nothing, we're already on that screen
                                 break;
+                            case R.id.list_navigation_menu_item_log_out:
+                                callSignUpActivity();
+                                break;
                             default:
                                 break;
                         }
@@ -93,5 +98,10 @@ public class TasksActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    private void callSignUpActivity(){
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }
