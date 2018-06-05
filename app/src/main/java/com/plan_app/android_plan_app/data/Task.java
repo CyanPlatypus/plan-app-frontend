@@ -1,72 +1,38 @@
 package com.plan_app.android_plan_app.data;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
 import java.util.UUID;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-@Entity(tableName = "tasks")
-public class Task {
 
-    @NonNull
-    public String getId() {
-        return id;
-    }
-
-    @NonNull
-    public String getName() {
-        return name;
-    }
-
-    @Nullable
-    public String getDescription() {
-        return description;
-    }
+public class Task extends RealmObject {
 
     @PrimaryKey
-    @NonNull
-    private final String id;
+    private String id;
 
-    @NonNull
-    private final String name;
+    private String name;
 
     @Nullable
-    private final String description;
+    private String description;
 
-    private final int plannedHours;
+    private int plannedHours;
 
     private Integer remoteId;
 
-    public int getPlannedHours() {
-        return plannedHours;
+
+    private int actualHours;
+
+    private boolean isCompleted;
+
+    public Task() {
     }
 
-    public int getActualHours() {
-        return actualHours;
-    }
 
-    private final int actualHours;
-
-    public boolean getIsCompleted() {
-        return isCompleted;
-    }
-
-    private final boolean isCompleted;
-
-    public Integer getRemoteId() {
-        return remoteId;
-    }
-
-    public void setRemoteId(Integer remoteId) {
-        this.remoteId = remoteId;
-    }
-
-    @Ignore
     public Task(@NonNull String name, @Nullable String description, @NonNull String id,
                 int plannedHours, int actualHours, boolean isCompleted) {
         this.name = name;
@@ -77,7 +43,7 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
-    @Ignore
+
     public Task(@NonNull String name, @Nullable String description,
                 int plannedHours, int actualHours, boolean isCompleted) {
         this.name = name;
@@ -86,5 +52,66 @@ public class Task {
         this.plannedHours = plannedHours;
         this.actualHours = actualHours;
         this.isCompleted = isCompleted;
+    }
+
+
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
+    @Nullable
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@Nullable String description) {
+        this.description = description;
+    }
+
+    public int getPlannedHours() {
+        return plannedHours;
+    }
+
+    public void setPlannedHours(int plannedHours) {
+        this.plannedHours = plannedHours;
+    }
+
+    public Integer getRemoteId() {
+        return remoteId;
+    }
+
+    public void setRemoteId(Integer remoteId) {
+        this.remoteId = remoteId;
+    }
+
+    public int getActualHours() {
+        return actualHours;
+    }
+
+    public void setActualHours(int actualHours) {
+        this.actualHours = actualHours;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

@@ -97,7 +97,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showNoTasks() {
-
+        mAdapter.setTasks(new ArrayList<>());
     }
 
     @Override
