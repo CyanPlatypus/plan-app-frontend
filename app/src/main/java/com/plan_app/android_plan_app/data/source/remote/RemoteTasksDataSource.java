@@ -21,6 +21,7 @@ import retrofit2.Response;
 
 public class RemoteTasksDataSource implements TasksDataSource {
 
+    //singletone
     private static RemoteTasksDataSource INSTANCE;
 
     private String tokenWithType;
