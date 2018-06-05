@@ -75,6 +75,33 @@ public class RemoteTasksDataSource implements TasksDataSource {
 //        Call<TaskDto> call = planService.getTask()
     }
 
+    public void saveTask(@NonNull SaveTaskCallback callback, @NonNull Task task) {
+        PlanService planService = ServiceGenerator.createService(PlanService.class);
+
+        Call<ResponseBody> call = planService.addTask(ConvertToTaskDto(task));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try{
+                    Integer i = Integer.parseInt(response.body().string());
+                    if (i != null)
+                        callback.onTaskSaved(i);
+                    else
+                        callback.onDataNotAvailable();
+                }
+                catch (Exception e){
+                    callback.onDataNotAvailable();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
     @Override
     public void saveTask(@NonNull Task task) {
         PlanService planService = ServiceGenerator.createService(PlanService.class);
@@ -84,12 +111,10 @@ public class RemoteTasksDataSource implements TasksDataSource {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
