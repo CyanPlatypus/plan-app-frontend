@@ -102,7 +102,22 @@ public class TasksRepository implements TasksDataSource {
 
             }
         });
+        for (Task task : tasks) {
+            RemoteTasksDataSource.getInstance().saveTask(task, new SaveTaskCallback() {
+                @Override
+                public void onTaskSaved(Integer remoteId) {
+                    realm.executeTransaction(realm1 -> {
+                        task.setRemoteId(remoteId);
+                    });
+                }
 
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+        realm.close();
     }
 
     @Override

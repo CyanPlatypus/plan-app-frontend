@@ -9,17 +9,29 @@ import io.realm.Realm;
 
 public class UserRepository {
 
-    private UserRepository INSTANCE = null;
+    private static UserRepository INSTANCE = null;
 
     private UserRepository() {
 
     }
 
-    public UserRepository getInstance() {
+    public static UserRepository getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new UserRepository();
         }
         return INSTANCE;
+    }
+
+    public void getUser(GetUserCallback callback) {
+        Realm realm = Realm.getDefaultInstance();
+        UserCredentials user = realm.where(UserCredentials.class).findFirst();
+        if (user != null) {
+            callback.onUserFound(user);
+        }
+        else {
+            callback.onUserNotFound();
+        }
+        realm.close();
     }
 
     public void getUser(@NonNull String email, GetUserCallback callback) {
@@ -60,13 +72,13 @@ public class UserRepository {
     }
 
 
-    interface GetUserCallback {
+    public interface GetUserCallback {
         void onUserFound(UserCredentials user);
 
         void onUserNotFound();
     }
 
-    interface AddUserCallback {
+     public interface AddUserCallback {
         void onSuccess();
 
         void onUserExists();

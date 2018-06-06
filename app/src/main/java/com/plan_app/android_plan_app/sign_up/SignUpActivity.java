@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.plan_app.android_plan_app.R;
+import com.plan_app.android_plan_app.data.UserCredentials;
+import com.plan_app.android_plan_app.data.source.UserRepository;
 import com.plan_app.android_plan_app.server.AuthenticationService;
 import com.plan_app.android_plan_app.server.SignInCallback;
 import com.plan_app.android_plan_app.tasks.TasksActivity;
@@ -169,6 +171,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
+        String name = mNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -206,7 +209,29 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             AuthenticationService.getInstance().signIn(email, password, new SignInCallback() {
                 @Override
                 public void onSuccess() {
-                    changeActivity();
+                    UserRepository userRepository = UserRepository.getInstance();
+                    userRepository.getUser(email, new UserRepository.GetUserCallback() {
+                        @Override
+                        public void onUserFound(UserCredentials user) {
+                            userRepository.deleteUser(email);
+                        }
+
+                        @Override
+                        public void onUserNotFound() {
+
+                        }
+                    });
+                    userRepository.addUser(new UserCredentials(name, email, password), new UserRepository.AddUserCallback() {
+                        @Override
+                        public void onSuccess() {
+                            changeActivity();
+                        }
+
+                        @Override
+                        public void onUserExists() {
+                            Snackbar.make(mEmailView, "Something bad happened", Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                 }
 
                 @Override
@@ -274,7 +299,17 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             AuthenticationService.getInstance().signUp(name, email, password, new SignInCallback() {
                 @Override
                 public void onSuccess() {
-                    changeActivity();
+                    UserRepository.getInstance().addUser(new UserCredentials(name, email, password), new UserRepository.AddUserCallback() {
+                        @Override
+                        public void onSuccess() {
+                            changeActivity();
+                        }
+
+                        @Override
+                        public void onUserExists() {
+                            mEmailView.setError("This email is already registered");
+                        }
+                    });
                 }
 
                 @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.plan_app.android_plan_app.R;
+import com.plan_app.android_plan_app.data.UserCredentials;
 import com.plan_app.android_plan_app.data.source.TasksRepository;
+import com.plan_app.android_plan_app.data.source.UserRepository;
+import com.plan_app.android_plan_app.server.AuthenticationService;
+import com.plan_app.android_plan_app.server.SignInCallback;
 import com.plan_app.android_plan_app.sign_up.SignUpActivity;
 
 
@@ -27,6 +32,7 @@ public class TasksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
+
 
         // Set up the toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -42,6 +48,29 @@ public class TasksActivity extends AppCompatActivity {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
+
+        UserRepository.getInstance().getUser(new UserRepository.GetUserCallback() {
+            @Override
+            public void onUserFound(UserCredentials user) {
+                AuthenticationService.getInstance().signIn(user.getEmail(), user.getPassword(), new SignInCallback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Snackbar.make(toolbar, "Cannot log in. Server unavailable?", Snackbar.LENGTH_LONG);
+                    }
+                });
+            }
+
+            @Override
+            public void onUserNotFound() {
+                callSignUpActivity();
+            }
+        });
+
 
         TasksFragment tasksFragment =
                 (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -101,6 +130,17 @@ public class TasksActivity extends AppCompatActivity {
     }
 
     private void callSignUpActivity(){
+        UserRepository.getInstance().getUser(new UserRepository.GetUserCallback() {
+            @Override
+            public void onUserFound(UserCredentials user) {
+                UserRepository.getInstance().deleteUser(user.getEmail());
+            }
+
+            @Override
+            public void onUserNotFound() {
+
+            }
+        });
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }

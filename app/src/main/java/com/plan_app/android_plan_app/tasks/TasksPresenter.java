@@ -16,6 +16,8 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     private final TasksContract.View mTasksView;
 
+    private boolean isFirstStart = true;
+
     public TasksPresenter(TasksRepository tasksRepository, TasksContract.View tasksView) {
         mTasksRepository = tasksRepository;
         mTasksView = tasksView;
@@ -24,7 +26,13 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void start() {
-        loadTasks(false);
+        if (isFirstStart) {
+            loadTasks(true);
+            isFirstStart = false;
+        }
+        else {
+            loadTasks(false);
+        }
     }
 
     @Override
