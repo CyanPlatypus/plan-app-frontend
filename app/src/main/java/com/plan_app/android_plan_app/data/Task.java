@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -24,10 +25,11 @@ public class Task extends RealmObject {
 
     private Integer remoteId;
 
-
     private int actualHours;
 
     private boolean isCompleted;
+
+    RealmList<Comment> comments;
 
     public Task() {
     }
@@ -113,5 +115,13 @@ public class Task extends RealmObject {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public RealmList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(RealmList<Comment> comments) {
+        this.comments = comments;
     }
 }

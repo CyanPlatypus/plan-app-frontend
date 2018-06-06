@@ -2,7 +2,9 @@ package com.plan_app.android_plan_app.data.source;
 
 import android.support.annotation.NonNull;
 
+import com.plan_app.android_plan_app.data.Comment;
 import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.data.source.remote.RemoteCommentDataSource;
 import com.plan_app.android_plan_app.data.source.remote.RemoteTasksDataSource;
 
 import java.util.ArrayList;
@@ -57,14 +59,28 @@ public class TasksRepository implements TasksDataSource {
     public void saveTask(@NonNull Task task) {
         Realm realm = Realm.getDefaultInstance();
         if (realm.where(Task.class).equalTo("id", task.getId()).findFirst() != null) {
+            realm.executeTransaction(realm1 -> {
+                realm1.insertOrUpdate(task);
+            });
             RemoteTasksDataSource.getInstance().editTask(task);
         }
         else {
-            RemoteTasksDataSource.getInstance().saveTask(task);
+            RemoteTasksDataSource.getInstance().saveTask(task, new SaveTaskCallback() {
+                @Override
+                public void onTaskSaved(Integer remoteId) {
+                    realm.executeTransaction(realm1 -> {
+                        task.setRemoteId(remoteId);
+                        realm1.insert(task);
+                    });
+                }
+                @Override
+                public void onDataNotAvailable() {
+                    realm.executeTransaction(realm1 -> {
+                        realm1.insert(task);
+                    });
+                }
+            });
         }
-        realm.executeTransaction(realm1 -> {
-            realm1.insertOrUpdate(task);
-        });
         realm.close();
     }
 
@@ -112,5 +128,57 @@ public class TasksRepository implements TasksDataSource {
             }
         }
         realm.close();
+    }
+
+    public void refreshComments(@NonNull String taskId) {
+        Realm realm = Realm.getDefaultInstance();
+        Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
+        if (task != null && task.getRemoteId() != null) {
+            RemoteCommentDataSource.getInstance().getComments(task.getRemoteId(), new CommentDataSource.LoadCommentsCallback() {
+                @Override
+                public void onCommentsLoaded(List<Comment> comments) {
+                    realm.executeTransaction(realm1 -> {
+                        for (Comment comment : comments) {
+                            task.getComments().add(comment);
+                        }
+                    });
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+    }
+
+    public void getComments(@NonNull String taskId, CommentDataSource.LoadCommentsCallback callback) {
+        Realm realm = Realm.getDefaultInstance();
+        Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
+        if (task == null) {
+            callback.onDataNotAvailable();
+        }
+        else {
+            callback.onCommentsLoaded(task.getComments());
+        }
+    }
+
+    public void addComment(@NonNull String taskId, @NonNull Comment comment) {
+        Realm realm = Realm.getDefaultInstance();
+        Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
+        realm.executeTransaction(realm1 -> {
+            task.getComments().add(comment);
+        });
+        realm.close();
+        RemoteCommentDataSource.getInstance().saveComment(comment, task.getRemoteId());
+    }
+
+    public void deleteComment(@NonNull Comment comment) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            comment.deleteFromRealm();
+        });
+        realm.close();
+        RemoteCommentDataSource.getInstance().deleteComment(comment.getRemoteId());
     }
 }

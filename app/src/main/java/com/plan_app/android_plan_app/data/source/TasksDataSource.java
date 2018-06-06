@@ -42,7 +42,7 @@ public interface TasksDataSource {
     }
 
     interface SaveTaskCallback{
-        void onTaskSaved (Integer remoreId);
+        void onTaskSaved (Integer remoteId);
         void onDataNotAvailable();
     }
 

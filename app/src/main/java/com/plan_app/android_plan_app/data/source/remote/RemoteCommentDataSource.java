@@ -31,7 +31,7 @@ public class RemoteCommentDataSource implements CommentDataSource {
 
 
     @Override
-    public void getComments(@NonNull LoadCommentsCallback callback, @NonNull  Integer taskId) {
+    public void getComments(@NonNull Integer taskId, @NonNull LoadCommentsCallback callback) {
         PlanService planService = ServiceGenerator
                 .createService(PlanService.class);
         Call<Iterable<CommentDto>> call = planService.getTaskComments(taskId);

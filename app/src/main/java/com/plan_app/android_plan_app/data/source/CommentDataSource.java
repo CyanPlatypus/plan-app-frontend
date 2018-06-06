@@ -23,7 +23,7 @@ public interface CommentDataSource {
         void onDataNotAvailable();
     }
 
-    void getComments(@NonNull LoadCommentsCallback callback, @NonNull  Integer taskId);
+    void getComments(@NonNull Integer taskId, @NonNull LoadCommentsCallback callback);
 
     void getComment(@NonNull String commentId, @NonNull GetCommentCallback callback);
 

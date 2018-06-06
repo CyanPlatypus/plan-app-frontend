@@ -1,17 +1,24 @@
 package com.plan_app.android_plan_app.data;
 
-import com.plan.dto.CommentDto;
 
-/**
- * Created by Ella on 05.06.2018.
- */
+import java.util.UUID;
 
-public class Comment {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Comment extends RealmObject {
+
+    @PrimaryKey
+    private String id;
     private Integer remoteId;
     private String name;
     private String description;
     private double hours = 0.0;
+
+    public Comment() {
+        id = UUID.randomUUID().toString();
+    }
+
 
     public Integer getRemoteId() {
         return remoteId;

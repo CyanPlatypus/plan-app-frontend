@@ -75,7 +75,7 @@ public class RemoteTasksDataSource implements TasksDataSource {
 //        Call<TaskDto> call = planService.getTask()
     }
 
-    public void saveTask(@NonNull SaveTaskCallback callback, @NonNull Task task) {
+    public void saveTask(@NonNull Task task, @NonNull SaveTaskCallback callback) {
         PlanService planService = ServiceGenerator.createService(PlanService.class);
 
         Call<ResponseBody> call = planService.addTask(ConvertToTaskDto(task));
