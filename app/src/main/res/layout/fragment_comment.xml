@@ -9,22 +9,12 @@
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimary"
         android:paddingLeft="5dp"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="@android:color/background_light"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/comment_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="?attr/colorButtonNormal"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@android:color/background_light"
-        android:textSize="@dimen/hours_text_size"
-        android:paddingLeft="5dp"/>
 
     <TextView
         android:id="@+id/comment_text"

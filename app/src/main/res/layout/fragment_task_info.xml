@@ -10,18 +10,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="5dp">
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/name" />
+            android:id="@+id/description"
+            android:textColor="@android:color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/description" />
-        <TextView
+            android:id="@+id/hours"
+            android:textColor="@android:color/black"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_comm"
+        android:text= "@string/add_comment"/>
+
+        <EditText
+            android:id="@+id/add_comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/hours" />
+            android:ems="10"
+            android:inputType="textMultiLine" />
+    <Button
+        android:id="@+id/button_add_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add" />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

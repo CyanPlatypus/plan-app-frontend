@@ -42,8 +42,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     public void onBindViewHolder(@NonNull CommentRecyclerViewAdapter.ViewHolder holder, int position) {
         Comment comment =  mComments.get(position);
         holder.mItem =comment;
-        holder.mUserName.setText("Tom");
-        holder.mCommentName.setText(comment.getName());
+        holder.mUserName.setText(comment.getName());
         holder.mCommentText.setText(comment.getDescription());
 
 //        holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +65,6 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mUserName;
-        public final TextView mCommentName;
         public final TextView mCommentText;
         public Comment mItem;
 
@@ -74,7 +72,6 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
             super(view);
             mView = view;
             mUserName = view.findViewById(R.id.user_name);
-            mCommentName = view.findViewById(R.id.comment_name);
             mCommentText = view.findViewById(R.id.comment_text);
         }
 
