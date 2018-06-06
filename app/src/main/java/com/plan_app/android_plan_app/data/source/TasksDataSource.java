@@ -41,6 +41,11 @@ public interface TasksDataSource {
         void onDataNotAvailable();
     }
 
+    interface SaveTaskCallback{
+        void onTaskSaved (Integer remoreId);
+        void onDataNotAvailable();
+    }
+
     void getTasks(@NonNull LoadTasksCallback callback);
 
     void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback);

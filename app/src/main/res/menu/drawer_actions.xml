@@ -20,6 +20,10 @@
         android:id="@+id/list_navigation_menu_item"
         android:title="@string/task_list_title"
         />
+    <item
+        android:id="@+id/list_navigation_menu_item_log_out"
+        android:title="@string/log_out"
+        />
     <!--<item-->
         <!--android:id="@+id/statistics_navigation_menu_item"-->
         <!--android:title="@string/statistics_title"-->

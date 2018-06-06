@@ -1,5 +1,6 @@
 package com.plan_app.android_plan_app.server.remote_api_service;
 
+import com.plan.dto.CommentDto;
 import com.plan.dto.TaskDto;
 import com.plan.dto.UserCreateRequestDto;
 import com.plan_app.android_plan_app.server.response.AuthenticationResponse;
@@ -32,7 +33,7 @@ public interface PlanService {
     @GET("/tasks/{id}")
     Call<TaskDto> getTask(@Path("id") Integer id );
 
-    @POST("/tasks/add")
+    @POST("/tasks")
     Call<ResponseBody> addTask(@Body TaskDto  taskDto);
 
     @PUT("/tasks/edit")
@@ -41,5 +42,13 @@ public interface PlanService {
     @DELETE("/tasks/{id}")
     Call<ResponseBody> removeTask(@Path("id") Integer id );
 
+    @GET("/tasks/{id}/comments")
+    Call<Iterable<CommentDto>> getTaskComments(@Path("id") Integer taskId);
+
+    @POST("/tasks/{id}/comments")
+    Call<ResponseBody> addComment(@Body CommentDto  commentDto, @Path("id") Integer taskId );
+
+    @DELETE("/tasks/comments/{id}")
+    Call<ResponseBody> removeComment(@Path("id") Integer id );
 
 }
