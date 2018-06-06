@@ -2,9 +2,14 @@ package com.plan_app.android_plan_app.task_info;
 
 import android.support.annotation.NonNull;
 
+import com.plan_app.android_plan_app.data.Comment;
 import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.data.source.CommentDataSource;
 import com.plan_app.android_plan_app.data.source.TasksDataSource;
 import com.plan_app.android_plan_app.data.source.TasksRepository;
+import com.plan_app.android_plan_app.data.source.remote.RemoteCommentDataSource;
+
+import java.util.List;
 
 
 public class TaskInfoPresenter implements TaskInfoContract.Presenter {
@@ -13,6 +18,7 @@ public class TaskInfoPresenter implements TaskInfoContract.Presenter {
     private TasksRepository mTaskRepository;
 
     private String mTaskId;
+    private Integer mTaskRepositoryId;
 
     public TaskInfoPresenter(@NonNull TaskInfoContract.View view,
                              @NonNull TasksRepository tasksRepository,
@@ -29,7 +35,24 @@ public class TaskInfoPresenter implements TaskInfoContract.Presenter {
         mTaskRepository.getTask(mTaskId, new TasksDataSource.GetTaskCallback() {
             @Override
             public void onTaskLoaded(Task task) {
+
+                mTaskRepositoryId = task.getRemoteId();
+
                 if (mView.isActive()) {
+
+                    RemoteCommentDataSource.getInstance().getComments(
+                            new CommentDataSource.LoadCommentsCallback() {
+                                @Override
+                                public void onCommentsLoaded(List<Comment> comments) {
+                                    mView.showComments(comments);
+                                }
+
+                                @Override
+                                public void onDataNotAvailable() {
+
+                                }
+                            },mTaskRepositoryId );
+
                     mView.setLoadingIndicator(false);
                     showTask(task);
                 }

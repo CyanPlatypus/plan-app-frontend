@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.plan_app.android_plan_app.BasePresenter;
 import com.plan_app.android_plan_app.BaseView;
+import com.plan_app.android_plan_app.data.Comment;
+
+import java.util.List;
 
 
 public interface TaskInfoContract {
@@ -28,6 +31,8 @@ public interface TaskInfoContract {
         void showTaskLoadingError();
 
         boolean isActive();
+
+        void showComments (List<Comment> comments);
     }
 
     interface Presenter extends BasePresenter {

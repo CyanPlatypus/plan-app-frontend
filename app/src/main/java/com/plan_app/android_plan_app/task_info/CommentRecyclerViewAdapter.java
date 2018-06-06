@@ -10,8 +10,26 @@ import android.widget.TextView;
 
 import com.plan_app.android_plan_app.R;
 import com.plan_app.android_plan_app.data.Comment;
+import com.plan_app.android_plan_app.tasks.TasksFragment;
+
+import java.util.List;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ViewHolder> {
+
+    private List<Comment> mComments;
+    //private final TasksFragment.OnListFragmentInteractionListener mListener;
+
+    public CommentRecyclerViewAdapter(/*TasksFragment.OnListFragmentInteractionListener listener,*/
+                                      List<Comment> comments) {
+        mComments = comments;
+        //mListener = listener;
+    }
+
+    public void setComments(List<Comment> comments) {
+        mComments = comments;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public CommentRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -22,12 +40,27 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
     @Override
     public void onBindViewHolder(@NonNull CommentRecyclerViewAdapter.ViewHolder holder, int position) {
+        Comment comment =  mComments.get(position);
+        holder.mItem =comment;
+        holder.mUserName.setText("Tom");
+        holder.mCommentName.setText(comment.getName());
+        holder.mCommentText.setText(comment.getDescription());
 
+//        holder.mView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null != mListener) {
+//                    // Notify the active callbacks interface (the activity, if the
+//                    // fragment is attached to one) that an item has been selected.
+//                    mListener.onTaskClick(holder.mItem);
+//                }
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mComments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

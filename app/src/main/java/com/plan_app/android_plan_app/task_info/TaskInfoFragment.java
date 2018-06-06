@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +17,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.plan_app.android_plan_app.R;
+import com.plan_app.android_plan_app.data.Comment;
 import com.plan_app.android_plan_app.task_add_edit.TaskAddEditActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TaskInfoFragment extends Fragment implements TaskInfoContract.View {
@@ -27,6 +33,8 @@ public class TaskInfoFragment extends Fragment implements TaskInfoContract.View 
     private TextView mHours;
 
     private TaskInfoContract.Presenter mPresenter;
+
+    private CommentRecyclerViewAdapter mAdapter;
 
     @Override
     public void setPresenter(@NonNull TaskInfoContract.Presenter presenter) {
@@ -61,6 +69,11 @@ public class TaskInfoFragment extends Fragment implements TaskInfoContract.View 
 
         fab.setOnClickListener(v -> mPresenter.editTask());
 
+        RecyclerView recyclerView = root.findViewById(R.id.comment_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        mAdapter = new CommentRecyclerViewAdapter(new ArrayList<>());
+        recyclerView.setAdapter(mAdapter);
+
         return root;
     }
 
@@ -82,6 +95,11 @@ public class TaskInfoFragment extends Fragment implements TaskInfoContract.View 
     public void showName(String name) {
         mName.setText(name);
         mName.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showComments (List<Comment> comments) {
+        mAdapter.setComments(comments);
     }
 
     @Override

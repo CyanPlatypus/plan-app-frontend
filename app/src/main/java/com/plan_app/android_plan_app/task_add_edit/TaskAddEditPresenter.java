@@ -2,9 +2,14 @@ package com.plan_app.android_plan_app.task_add_edit;
 
 import android.support.annotation.Nullable;
 
+import com.plan_app.android_plan_app.data.Comment;
 import com.plan_app.android_plan_app.data.Task;
+import com.plan_app.android_plan_app.data.source.CommentDataSource;
 import com.plan_app.android_plan_app.data.source.TasksDataSource;
 import com.plan_app.android_plan_app.data.source.TasksRepository;
+import com.plan_app.android_plan_app.data.source.remote.RemoteCommentDataSource;
+
+import java.util.List;
 
 
 public class TaskAddEditPresenter implements TaskAddEditContract.Presenter {
@@ -14,6 +19,8 @@ public class TaskAddEditPresenter implements TaskAddEditContract.Presenter {
     private TasksRepository mTasksRepository;
 
     private String mTaskId;
+
+    private Integer mTaskRemoteId;
 
     public TaskAddEditPresenter(TaskAddEditContract.View view,
                                 TasksRepository tasksRepository,
@@ -48,6 +55,7 @@ public class TaskAddEditPresenter implements TaskAddEditContract.Presenter {
                     Integer.parseInt(plannedHours),
                     Integer.parseInt(actualHours),
                     false);
+            task.setRemoteId(mTaskRemoteId);
         }
         mTasksRepository.saveTask(task);
 
@@ -68,6 +76,10 @@ public class TaskAddEditPresenter implements TaskAddEditContract.Presenter {
                 mView.setDescription(task.getDescription());
                 mView.setActualHours(Integer.toString(task.getActualHours()));
                 mView.setPlannedHours(Integer.toString(task.getPlannedHours()));
+                mTaskRemoteId = task.getRemoteId();
+
+
+
             }
 
             @Override
@@ -77,6 +89,8 @@ public class TaskAddEditPresenter implements TaskAddEditContract.Presenter {
                 mView.showTaskLoadingError();
             }
         });
+
+
     }
 
     private boolean isNewTask() {

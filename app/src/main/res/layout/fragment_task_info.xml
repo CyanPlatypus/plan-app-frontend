@@ -1,13 +1,15 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.plan_app.android_plan_app.task_info.TaskInfoFragment">
+    tools:context="com.plan_app.android_plan_app.task_info.TaskInfoFragment"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="5dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,4 +23,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/hours" />
     </LinearLayout>
-</ScrollView>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/comment_list"
+        android:name="com.plan_app.android_plan_app.TaskInfoFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.plan_app.android_plan_app.task_info.TaskInfoFragment"
+        tools:listitem="@layout/fragment_comment" />
+</LinearLayout>
